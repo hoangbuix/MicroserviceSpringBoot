@@ -3,10 +3,13 @@ package com.hoangbuix.orderservice.controller;
 import com.hoangbuix.orderservice.dto.OrderRequest;
 import com.hoangbuix.orderservice.entity.OrderEntity;
 import com.hoangbuix.orderservice.service.IOrderService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author hoangbui
@@ -28,9 +31,13 @@ public class OrderController {
 
     @PostMapping("/place-order")
     @ResponseStatus(HttpStatus.CREATED)
-    private String placeOrder(@RequestBody OrderRequest orderRequest){
-        iOrderService.placeOrder(orderRequest);
-        return "Order placed Successfully";
+    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
+    private CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest){
+       return CompletableFuture.supplyAsync(()-> iOrderService.placeOrder(orderRequest));
+    }
+
+    public CompletableFuture<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException) {
+        return CompletableFuture.supplyAsync(() -> "Opps! Something went wrong, please order after some time!");
     }
 
 

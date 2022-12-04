@@ -27,6 +27,9 @@ public class InventoryServiceImpl implements IInventoryService {
     @SneakyThrows
     @Override
     public List<InventoryResponse> isInStock(List<String> skuCode) {
+        log.info("Waiting Stared");
+        Thread.sleep(10000);
+        log.info("Waiting Ended");
         List<InventoryResponse> responseList = null;
         for (String w : skuCode){
             responseList = inventoryRepository.findAllBySkuCode(w).stream().map(inventory->

@@ -21,5 +21,5 @@ public interface IOrderService {
     void delete(Long id);
     Boolean existOrder(Long id);
 
-    void placeOrder(OrderRequest orderRequest);
+    String placeOrder(OrderRequest orderRequest);
 }

@@ -80,8 +80,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public void placeOrder(OrderRequest orderRequest) {
-        try {
+    public String placeOrder(OrderRequest orderRequest) {
             OrderEntity order = new OrderEntity();
             order.setOrderNumber(UUID.randomUUID().toString());
             List<OrderLineItem> orderLineItems= orderRequest.getLineItemsDto()
@@ -98,11 +97,10 @@ public class OrderServiceImpl implements IOrderService {
             Boolean result = Arrays.stream(inventoryResponseArr).allMatch(InventoryResponse::isInStock);
             if(result) {
                 orderRepository.save(order);
+                return "Order place successfully";
             } else {
-                throw new IllegalArgumentException("product is not in stock, please try again later");            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+                throw new IllegalArgumentException("product is not in stock, please try again later");
+            }
     }
 
     private OrderLineItem mapDto(OrderLineItemsDto orderLineItemsDto){
