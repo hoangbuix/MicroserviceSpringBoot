@@ -1,7 +1,8 @@
 package com.hoangbuix.inventoryservice.enity;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity(name = "inventory")
 @Table(name = "inventory")
