@@ -94,7 +94,7 @@ public class OrderServiceImpl implements IOrderService {
         List<String> skuCode = order.getOrderLineItems().stream().map(orderLineItem -> orderLineItem.getSkuCode()).collect(Collectors.toList());
         // call inventory service, and place order is product is in stock
         InventoryResponse[] inventoryResponseArr = webClient.get()
-                .uri("http://localhost:8082/api/v1/inventory/is-in-stock",
+                .uri("http://localhost:8080/api/v1/inventory/is-in-stock",
                 uriBuilder -> uriBuilder.queryParam("skuCode", skuCode).build())
                 .retrieve().bodyToMono(InventoryResponse[].class).block();
         boolean result = Arrays.stream(Objects.requireNonNull(inventoryResponseArr)).allMatch(InventoryResponse::isInStock);
