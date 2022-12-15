@@ -7,11 +7,13 @@ import com.hoangbuix.orderservice.dto.OrderLineItemsDto;
 import com.hoangbuix.orderservice.dto.OrderRequest;
 import com.hoangbuix.orderservice.entity.OrderEntity;
 import com.hoangbuix.orderservice.entity.OrderLineItem;
+import com.hoangbuix.orderservice.event.OrderPlacedEvent;
 import com.hoangbuix.orderservice.repository.OrderRepository;
 import com.hoangbuix.orderservice.service.IOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -36,6 +38,7 @@ public class OrderServiceImpl implements IOrderService {
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClient;
     private final Tracer tracer;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     @Override
     public List<OrderEntity> findAll() {
@@ -113,6 +116,7 @@ public class OrderServiceImpl implements IOrderService {
             boolean result = Arrays.stream(Objects.requireNonNull(inventoryResponseArr)).allMatch(InventoryResponse::isInStock);
             if (result) {
                 orderRepository.save(order);
+                kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
                 return "Order placed Successfully";
             } else {
                 throw new IllegalArgumentException("product is not in stock, please try again later");
