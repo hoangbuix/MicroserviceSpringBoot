@@ -6,7 +6,6 @@ import com.hoangbuix.inventoryservice.service.IInventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +26,8 @@ public class InventoryServiceImpl implements IInventoryService {
         Thread.sleep(10000);
         log.info("Wait Ended");
         List<InventoryResponse> responseList = null;
-        for (String w : skuCode){
-            responseList = inventoryRepository.findAllBySkuCode(w).stream().map(inventory->
+        for (String w : skuCode) {
+            responseList = inventoryRepository.findAllBySkuCode(w).stream().map(inventory ->
                     InventoryResponse.builder()
                             .id(inventory.getId())
                             .skuCode(inventory.getSkuCode())

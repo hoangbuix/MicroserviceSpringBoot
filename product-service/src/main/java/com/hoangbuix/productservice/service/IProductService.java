@@ -9,5 +9,6 @@ import java.util.List;
 @Service
 public interface IProductService {
     List<ProductResponse> getAllProducts();
+
     void createProduct(ProductRequest productRequest);
 }

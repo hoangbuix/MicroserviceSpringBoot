@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @EnableEurekaClient
 public class ProductServiceApplication implements CommandLineRunner {
     private final ProductRepository productRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(ProductServiceApplication.class, args);
     }

@@ -16,10 +16,15 @@ import java.util.List;
 @Service
 public interface IOrderService {
     List<OrderEntity> findAll();
+
     OrderEntity findById(Long id);
+
     void save(OrderEntity req);
+
     void update(OrderEntity req);
+
     void delete(Long id);
+
     Boolean existOrder(Long id);
 
     String placeOrder(OrderRequest orderRequest);

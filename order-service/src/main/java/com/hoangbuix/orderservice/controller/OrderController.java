@@ -28,7 +28,7 @@ public class OrderController {
 
 
     @GetMapping("/find-all")
-    private ResponseEntity<?> findAll(){
+    private ResponseEntity<?> findAll() {
         return new ResponseEntity<>(iOrderService.findAll(), HttpStatus.OK);
     }
 
@@ -37,7 +37,7 @@ public class OrderController {
     @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
     @TimeLimiter(name = "inventory")
     @Retry(name = "inventory")
-    private CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest){
+    private CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest) {
         return CompletableFuture.supplyAsync(() -> iOrderService.placeOrder(orderRequest));
     }
 
@@ -47,7 +47,7 @@ public class OrderController {
 
 
     @PostMapping("/createdOrUpdated")
-    private ResponseEntity<?> saveUser(@RequestBody OrderEntity req){
+    private ResponseEntity<?> saveUser(@RequestBody OrderEntity req) {
         boolean exist = iOrderService.existOrder(req.getId());
         if (!exist) {
             iOrderService.save(req);

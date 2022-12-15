@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface InventoryRepository  extends JpaRepository<InventoryEntity, Long> {
+public interface InventoryRepository extends JpaRepository<InventoryEntity, Long> {
     List<InventoryEntity> findAllBySkuCode(String skuCode);
 
 }

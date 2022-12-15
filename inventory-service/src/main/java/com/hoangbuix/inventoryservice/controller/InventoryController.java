@@ -16,7 +16,7 @@ public class InventoryController {
 
     @GetMapping("/is-in-stock")
     @ResponseStatus(HttpStatus.OK)
-    private List<InventoryResponse> isInStock(@RequestParam(name = "skuCode") List<String> skuCode){
+    private List<InventoryResponse> isInStock(@RequestParam(name = "skuCode") List<String> skuCode) {
         return inventoryService.isInStock(skuCode);
     }
 }
